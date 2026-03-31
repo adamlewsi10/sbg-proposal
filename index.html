@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sesame Bankhall Group — HubSpot Implementation Overview | BBD Boom</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --yellow: #FEF5AC;
+  --blue-light: #f0f5ff;
+  --green-light: #f2fbe8;
+  --beige: #f9f8f5;
+  --black: #010103;
+  --dark: #0a0a0f;
+  --dark-card: #151520;
+  --white: #ffffff;
+  --gray-50: #fafafa;
+  --gray-100: #f5f5f3;
+  --gray-200: #e8e8e4;
+  --gray-300: #d4d4d0;
+  --gray-400: #999;
+  --gray-600: #666;
+  --accent: #FEF5AC;
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans: 'Outfit', sans-serif;
+  --brand-sesame: #1a5276;
+  --brand-bankhall: #7d3c98;
+  --brand-pms: #148f77;
+  --brand-tates: #b9770e;
+  --ws-data: #3498db;
+  --ws-marketing: #27ae60;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--sans); color: var(--black); background: var(--white); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+
+/* NAV */
+.nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(10,10,15,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.06); padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 52px; }
+.nav-logo { font-weight: 700; font-size: 0.82rem; color: var(--white); letter-spacing: 0.03em; }
+.nav-logo span { color: var(--accent); }
+.nav-links { display: flex; gap: 1.5rem; }
+.nav-links a { color: rgba(255,255,255,0.5); text-decoration: none; font-size: 0.72rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; transition: color 0.3s; }
+.nav-links a:hover, .nav-links a.active { color: var(--accent); }
+@media (max-width: 768px) { .nav-links { display: none; } .nav { padding: 0 1rem; } }
+
+/* HERO */
+.hero { background: var(--dark); color: var(--white); padding: 9rem 2rem 4.5rem; position: relative; overflow: hidden; }
+.hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 70% 20%, rgba(254,245,172,0.05) 0%, transparent 60%); }
+.hero-inner { max-width: 1060px; margin: 0 auto; position: relative; z-index: 1; }
+.hero-label { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.2rem; }
+.hero h1 { font-family: var(--serif); font-size: clamp(2.2rem, 4.5vw, 3.4rem); font-weight: 300; line-height: 1.15; margin-bottom: 1.2rem; }
+.hero h1 em { font-style: italic; color: var(--accent); font-weight: 400; }
+.hero-sub { font-size: 1rem; color: rgba(255,255,255,0.5); max-width: 580px; margin-bottom: 2.5rem; font-weight: 300; }
+.hero-meta { font-size: 0.78rem; color: rgba(255,255,255,0.3); border-top: 1px solid rgba(255,255,255,0.07); padding-top: 1.2rem; }
+.stat-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: rgba(255,255,255,0.05); border-radius: 8px; overflow: hidden; margin-top: 2.5rem; }
+.stat-strip .stat { background: rgba(255,255,255,0.025); padding: 1.3rem 1rem; text-align: center; }
+.stat-strip .stat-num { font-family: var(--serif); font-size: 1.8rem; font-weight: 600; color: var(--accent); display: block; line-height: 1; }
+.stat-strip .stat-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.4); margin-top: 0.35rem; display: block; }
+@media (max-width: 600px) { .stat-strip { grid-template-columns: repeat(2, 1fr); } .hero { padding: 7.5rem 1.2rem 3rem; } }
+
+/* GLOBAL SECTION */
+section { padding: 4.5rem 2rem; }
+.section-inner { max-width: 1060px; margin: 0 auto; }
+.section-label { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 0.8rem; color: var(--gray-400); }
+.section-title { font-family: var(--serif); font-size: clamp(1.7rem, 3.2vw, 2.4rem); font-weight: 300; line-height: 1.2; margin-bottom: 0.8rem; }
+.section-title em { font-style: italic; font-weight: 400; }
+.section-sub { font-size: 0.95rem; color: var(--gray-600); max-width: 650px; margin-bottom: 2rem; font-weight: 300; }
+
+/* CLIENT — succinct */
+.about { background: var(--white); border-bottom: 1px solid var(--gray-200); }
+.about-text { font-family: var(--serif); font-size: 1.15rem; line-height: 1.75; max-width: 760px; color: #333; }
+
+/* CHALLENGES */
+.challenges { background: var(--white); }
+.challenge-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.2rem; margin-top: 1.5rem; }
+.challenge-card { background: var(--gray-50); border-radius: 8px; padding: 1.8rem; border: 1px solid var(--gray-200); transition: transform 0.3s, box-shadow 0.3s; }
+.challenge-card:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(0,0,0,0.06); }
+.challenge-num { font-family: var(--serif); font-size: 1.6rem; font-weight: 600; color: var(--black); opacity: 0.12; margin-bottom: 0.4rem; }
+.challenge-card h3 { font-family: var(--serif); font-size: 1.1rem; font-weight: 600; margin-bottom: 0.4rem; }
+.challenge-card p { font-size: 0.85rem; color: var(--gray-600); line-height: 1.55; }
+.challenge-metric { display: inline-block; margin-top: 0.7rem; background: #fef0f0; color: #c0392b; font-size: 0.72rem; font-weight: 600; padding: 0.25rem 0.7rem; border-radius: 20px; }
+
+/* OUTCOMES */
+.outcomes { background: var(--dark); color: var(--white); }
+.outcomes .section-label { color: var(--accent); }
+.outcome-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 1rem; margin-top: 1.5rem; }
+.outcome-card { background: rgba(255,255,255,0.035); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 1.6rem; border-left: 3px solid var(--accent); transition: background 0.3s; }
+.outcome-card:hover { background: rgba(255,255,255,0.06); }
+.outcome-num { font-family: var(--serif); font-size: 0.75rem; font-weight: 600; color: var(--accent); margin-bottom: 0.3rem; letter-spacing: 0.1em; }
+.outcome-card h3 { font-family: var(--serif); font-size: 1.05rem; font-weight: 600; margin-bottom: 0.4rem; }
+.outcome-card p { font-size: 0.82rem; color: rgba(255,255,255,0.5); line-height: 1.55; }
+.outcome-roi { display: inline-block; margin-top: 0.6rem; background: rgba(234,253,214,0.1); color: #a8e6a1; font-size: 0.7rem; font-weight: 600; padding: 0.25rem 0.7rem; border-radius: 20px; }
+
+/* ARCHITECTURE */
+.architecture { background: var(--white); }
+.arch-toggle { display: flex; gap: 0; margin-bottom: 2rem; border: 2px solid var(--black); border-radius: 6px; overflow: hidden; width: fit-content; }
+.arch-toggle button { padding: 0.65rem 1.8rem; font-family: var(--sans); font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; border: none; cursor: pointer; transition: all 0.3s; background: transparent; color: var(--black); }
+.arch-toggle button.active { background: var(--black); color: var(--accent); }
+.arch-view { display: none; }
+.arch-view.active { display: block; }
+.arch-diagram { background: var(--gray-50); border-radius: 12px; padding: 2.5rem; border: 1px solid var(--gray-200); }
+.arch-diagram h3 { font-family: var(--serif); font-size: 1.2rem; margin-bottom: 1.5rem; font-weight: 600; }
+
+/* Today architecture — brands across platforms */
+.today-row { display: flex; flex-direction: column; gap: 1.2rem; }
+.today-platform { border: 1px solid var(--gray-200); border-radius: 8px; overflow: hidden; background: var(--white); }
+.today-platform.pain { border-color: #e74c3c; border-style: dashed; }
+.today-platform-header { padding: 0.8rem 1.2rem; font-size: 0.82rem; font-weight: 600; display: flex; align-items: center; gap: 0.6rem; }
+.today-platform-header .status { font-size: 0.65rem; font-weight: 500; padding: 0.15rem 0.5rem; border-radius: 10px; }
+.today-platform-header .status.problem { background: #fef0f0; color: #c0392b; }
+.today-platform-header .status.ok { background: #eafaf1; color: #27ae60; }
+.today-platform-header .status.expensive { background: #fef9e7; color: #b7950b; }
+.today-brands { display: flex; gap: 0.5rem; padding: 0 1.2rem 0.8rem; flex-wrap: wrap; }
+.brand-pill { font-size: 0.65rem; font-weight: 600; padding: 0.2rem 0.6rem; border-radius: 4px; letter-spacing: 0.03em; }
+.brand-pill.sesame { background: rgba(26,82,118,0.1); color: var(--brand-sesame); }
+.brand-pill.bankhall { background: rgba(125,60,152,0.1); color: var(--brand-bankhall); }
+.brand-pill.pms { background: rgba(20,143,119,0.1); color: var(--brand-pms); }
+.brand-pill.tates { background: rgba(185,119,14,0.1); color: var(--brand-tates); }
+.brand-pill.all { background: rgba(0,0,0,0.05); color: var(--gray-600); }
+.today-detail { font-size: 0.78rem; color: var(--gray-600); padding: 0 1.2rem 1rem; }
+
+/* HubSpot architecture — unified */
+.hs-arch { display: flex; flex-direction: column; gap: 0; }
+.hs-portal { border: 2px solid #FF7A59; border-radius: 12px; overflow: hidden; background: var(--white); }
+.hs-portal-header { background: #FF7A59; color: white; padding: 1rem 1.5rem; font-size: 0.9rem; font-weight: 600; display: flex; align-items: center; justify-content: space-between; }
+.hs-portal-header small { font-weight: 400; opacity: 0.8; font-size: 0.75rem; }
+.hs-hub-row { display: grid; grid-template-columns: 1fr; gap: 0; border-bottom: 1px solid #fde8e0; }
+.hs-hub-row:last-child { border-bottom: none; }
+.hs-hub { padding: 1.2rem 1.5rem; }
+.hs-hub-name { font-size: 0.82rem; font-weight: 600; margin-bottom: 0.6rem; display: flex; align-items: center; gap: 0.5rem; }
+.hs-hub-name .hub-badge { font-size: 0.6rem; padding: 0.15rem 0.5rem; border-radius: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+.hs-hub-name .hub-badge.enterprise { background: #FF7A59; color: white; }
+.hs-hub-name .hub-badge.addon { background: #fef9e7; color: #b7950b; }
+.bu-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.6rem; margin-top: 0.5rem; }
+.bu-card { border-radius: 6px; padding: 0.7rem; text-align: center; font-size: 0.72rem; font-weight: 600; }
+.bu-card.master { border: 2px solid var(--brand-sesame); color: var(--brand-sesame); background: rgba(26,82,118,0.04); }
+.bu-card.bu1 { border: 2px solid var(--brand-bankhall); color: var(--brand-bankhall); background: rgba(125,60,152,0.04); }
+.bu-card.bu2 { border: 2px solid var(--brand-pms); color: var(--brand-pms); background: rgba(20,143,119,0.04); }
+.bu-card.bu3 { border: 2px solid var(--brand-tates); color: var(--brand-tates); background: rgba(185,119,14,0.04); }
+.bu-sub { display: block; font-weight: 400; font-size: 0.62rem; color: var(--gray-400); margin-top: 0.2rem; }
+.hs-features { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.5rem; }
+.hs-feat { font-size: 0.68rem; background: var(--gray-50); border: 1px solid var(--gray-200); padding: 0.2rem 0.55rem; border-radius: 4px; color: var(--gray-600); }
+
+/* Integrations below portal */
+.integration-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.8rem; margin-top: 1.2rem; }
+.int-card { border: 1px solid var(--gray-200); border-radius: 8px; padding: 1rem; background: var(--white); text-align: center; }
+.int-card h4 { font-size: 0.82rem; font-weight: 600; margin-bottom: 0.2rem; }
+.int-card p { font-size: 0.72rem; color: var(--gray-600); }
+.int-arrow { text-align: center; padding: 0.8rem 0; font-size: 1.2rem; color: var(--gray-300); }
+
+/* Ecosystem columns */
+.ecosystem-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.8rem; margin-top: 1.8rem; }
+.eco-col { padding: 1.2rem; border-radius: 8px; }
+.eco-col.retire { background: #fef5f5; }
+.eco-col.continue { background: #fefef5; }
+.eco-col.new { background: #f0fff0; }
+.eco-col h4 { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.6rem; }
+.eco-col ul { list-style: none; }
+.eco-col li { font-size: 0.82rem; padding: 0.25rem 0; border-bottom: 1px solid rgba(0,0,0,0.04); }
+@media (max-width: 768px) { .ecosystem-grid { grid-template-columns: 1fr; } .bu-grid { grid-template-columns: repeat(2, 1fr); } }
+
+/* APPROACH — Phases */
+.approach { background: var(--white); border-top: 1px solid var(--gray-200); }
+.phase-container { margin-top: 2rem; }
+.phase-block { margin-bottom: 2rem; }
+.phase-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; cursor: pointer; }
+.phase-badge { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; padding: 0.3rem 0.9rem; border-radius: 4px; }
+.phase-badge.p1 { background: var(--ws-data); color: white; }
+.phase-badge.p2 { background: var(--ws-marketing); color: white; }
+.phase-header h3 { font-family: var(--serif); font-size: 1.3rem; font-weight: 600; }
+.phase-header .phase-milestone { font-size: 0.75rem; color: var(--gray-400); font-weight: 500; margin-left: auto; }
+.phase-content { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+.ws-col { background: var(--gray-50); border-radius: 8px; padding: 1.5rem; border-top: 3px solid; }
+.ws-col.data { border-color: var(--ws-data); }
+.ws-col.marketing { border-color: var(--ws-marketing); }
+.ws-col h4 { font-size: 0.82rem; font-weight: 600; margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.4rem; }
+.ws-col h4 .ws-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+.ws-col.data .ws-dot { background: var(--ws-data); }
+.ws-col.marketing .ws-dot { background: var(--ws-marketing); }
+.ws-col ul { list-style: none; }
+.ws-col li { font-size: 0.82rem; padding: 0.4rem 0; border-bottom: 1px solid var(--gray-200); color: #444; }
+@media (max-width: 768px) { .phase-content { grid-template-columns: 1fr; } }
+
+/* MILESTONES */
+.milestones { background: var(--beige); }
+.milestone-track { display: flex; gap: 0; margin-top: 2rem; position: relative; }
+.milestone-track::before { content: ''; position: absolute; top: 18px; left: 0; right: 0; height: 3px; background: var(--gray-200); z-index: 0; }
+.milestone-item { flex: 1; text-align: center; position: relative; z-index: 1; }
+.milestone-dot { width: 36px; height: 36px; border-radius: 50%; margin: 0 auto 0.8rem; display: flex; align-items: center; justify-content: center; font-family: var(--serif); font-weight: 700; font-size: 0.85rem; color: white; }
+.milestone-dot.p1 { background: var(--ws-data); }
+.milestone-dot.p2 { background: var(--ws-marketing); }
+.milestone-dot.done { background: var(--black); }
+.milestone-item h4 { font-size: 0.78rem; font-weight: 600; margin-bottom: 0.2rem; }
+.milestone-item p { font-size: 0.7rem; color: var(--gray-600); }
+@media (max-width: 768px) { .milestone-track { flex-direction: column; gap: 1.5rem; } .milestone-track::before { display: none; } }
+
+/* CREDENTIALS */
+.credentials { background: var(--white); border-top: 1px solid var(--gray-200); }
+.cred-diagram-placeholder { background: var(--gray-50); border: 2px dashed var(--gray-200); border-radius: 12px; padding: 2.5rem 2rem; text-align: center; margin: 1.5rem 0 2rem; }
+.cred-diagram-placeholder h4 { font-family: var(--serif); font-size: 1.1rem; font-weight: 600; margin-bottom: 0.4rem; }
+.cred-diagram-placeholder p { font-size: 0.82rem; color: var(--gray-400); }
+.cred-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; }
+.cred-card { background: var(--gray-50); border-radius: 8px; padding: 1.5rem; border: 1px solid var(--gray-200); transition: transform 0.3s, box-shadow 0.3s; }
+.cred-card:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+.cred-tag { font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; padding: 0.18rem 0.55rem; border-radius: 3px; display: inline-block; margin-bottom: 0.5rem; }
+.cred-tag.dynamics { background: #e8f4fd; color: #2980b9; }
+.cred-tag.finserv { background: #fef5e7; color: #d68910; }
+.cred-tag.migration { background: #f5eef8; color: #8e44ad; }
+.cred-tag.events { background: #eafaf1; color: #27ae60; }
+.cred-tag.portal { background: #fef9e7; color: #b7950b; }
+.cred-card h3 { font-family: var(--serif); font-size: 1.05rem; font-weight: 600; margin-bottom: 0.3rem; }
+.cred-card p { font-size: 0.82rem; color: var(--gray-600); line-height: 1.55; }
+
+/* WHY BBD BOOM */
+.why-boom { background: var(--dark); color: var(--white); }
+.why-boom .section-label { color: var(--accent); }
+.proof-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-top: 1.5rem; }
+.proof-card { background: rgba(255,255,255,0.035); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 1.3rem; }
+.proof-card h3 { font-family: var(--serif); font-size: 1rem; font-weight: 600; color: var(--accent); margin-bottom: 0.3rem; }
+.proof-card p { font-size: 0.82rem; color: rgba(255,255,255,0.45); line-height: 1.55; }
+.boom-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: rgba(255,255,255,0.05); border-radius: 8px; overflow: hidden; margin-top: 2rem; }
+.boom-stat { background: rgba(255,255,255,0.025); padding: 1.5rem 1rem; text-align: center; }
+.boom-stat-num { font-family: var(--serif); font-size: 2rem; font-weight: 700; color: var(--accent); display: block; }
+.boom-stat-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.35); margin-top: 0.2rem; display: block; }
+.ecosystem-bar { text-align: center; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.05); }
+.ecosystem-bar p { font-size: 0.78rem; color: rgba(255,255,255,0.3); }
+@media (max-width: 600px) { .boom-stats { grid-template-columns: repeat(2, 1fr); } }
+
+/* INVESTMENT */
+.investment { background: var(--white); border-top: 1px solid var(--gray-200); }
+.invest-placeholder { background: var(--gray-50); border-radius: 12px; padding: 2.5rem; border: 1px solid var(--gray-200); text-align: center; max-width: 580px; }
+.invest-placeholder h3 { font-family: var(--serif); font-size: 1.4rem; font-weight: 600; margin-bottom: 0.4rem; }
+.invest-placeholder p { font-size: 0.88rem; color: var(--gray-600); }
+.invest-note { font-size: 0.78rem; color: var(--gray-400); margin-top: 1.2rem; font-style: italic; }
+
+/* NEXT STEPS */
+.next-steps { background: var(--dark); color: var(--white); }
+.next-steps .section-label { color: var(--accent); }
+.steps-list { max-width: 680px; margin-top: 1.5rem; }
+.step-item { display: flex; gap: 1rem; align-items: flex-start; padding: 1rem 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.step-num { width: 34px; height: 34px; min-width: 34px; border-radius: 50%; background: rgba(254,245,172,0.08); color: var(--accent); font-family: var(--serif); font-weight: 700; font-size: 0.95rem; display: flex; align-items: center; justify-content: center; }
+.step-item h4 { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.15rem; }
+.step-item p { font-size: 0.78rem; color: rgba(255,255,255,0.4); }
+.cta-btn { display: inline-block; margin-top: 2rem; padding: 0.85rem 2.2rem; background: var(--accent); color: var(--black); text-decoration: none; font-weight: 600; font-size: 0.82rem; border-radius: 6px; letter-spacing: 0.03em; transition: transform 0.3s, box-shadow 0.3s; }
+.cta-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(254,245,172,0.3); }
+
+/* FOOTER */
+footer { background: var(--dark); color: rgba(255,255,255,0.25); padding: 2.5rem 2rem; text-align: center; border-top: 1px solid rgba(255,255,255,0.04); font-size: 0.72rem; }
+footer a { color: var(--accent); text-decoration: none; }
+footer .we-relate { font-family: var(--serif); font-size: 1.3rem; color: var(--white); margin-bottom: 0.8rem; }
+footer .we-relate em { color: var(--accent); }
+
+/* ANIMATIONS */
+.reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-logo">BBD <span>Boom</span> &middot; Siloy Group</div>
+  <div class="nav-links">
+    <a href="#challenges">Challenges</a>
+    <a href="#outcomes">Outcomes</a>
+    <a href="#architecture">Architecture</a>
+    <a href="#approach">Approach</a>
+    <a href="#credentials">Credentials</a>
+    <a href="#why-boom">Why Us</a>
+    <a href="#next-steps">Next Steps</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-inner">
+    <div class="hero-label">Explore Your Possibilities</div>
+    <h1>Sesame Bankhall Group<br><em>HubSpot Marketing Platform Implementation</em></h1>
+    <p class="hero-sub">A unified marketing engine for four brands &mdash; integrated with Dynamics 365, replacing fragmented tooling, and delivering measurable ROI from day one.</p>
+    <div class="hero-meta">Prepared for Sesame Bankhall Group &middot; April 2026 &middot; BBD Boom &mdash; HubSpot Elite Solutions Partner (Siloy Group)</div>
+    <div class="stat-strip">
+      <div class="stat"><span class="stat-num">4</span><span class="stat-label">Brands</span></div>
+      <div class="stat"><span class="stat-num">37K</span><span class="stat-label">Contacts</span></div>
+      <div class="stat"><span class="stat-num">130+</span><span class="stat-label">Events / Year</span></div>
+      <div class="stat"><span class="stat-num">60+</span><span class="stat-label">Users</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- CLIENT — succinct -->
+<section class="about reveal" id="about">
+  <div class="section-inner">
+    <div class="section-label">The Client</div>
+    <h2 class="section-title">Sesame Bankhall <em>Group</em></h2>
+    <p class="about-text">Part of the Aviva group, SBG supports financial advisers across the Appointed Representative and Directly Authorised space through four brands: <strong>Sesame</strong>, <strong>Bankhall</strong>, <strong>Premier Mortgage Service</strong>, and <strong>Tates</strong>. A compact marketing team serves 30,000+ advisers weekly with regulatory, commercial, and event communications across all four brands.</p>
+  </div>
+</section>
+
+<!-- CHALLENGES -->
+<section class="challenges reveal" id="challenges">
+  <div class="section-inner">
+    <div class="section-label">The Challenges</div>
+    <h2 class="section-title">Where things <em>stand today</em></h2>
+    <p class="section-sub">From previous conversations, here is what we heard.</p>
+    <div class="challenge-grid">
+      <div class="challenge-card">
+        <div class="challenge-num">01</div>
+        <h3>Email Takes 3x Longer</h3>
+        <p>Building and sending an email campaign in D365 Customer Insights takes approximately three times longer than the previous platform. The team is roughly 40% behind in output capacity.</p>
+        <span class="challenge-metric">300% slower email production</span>
+      </div>
+      <div class="challenge-card">
+        <div class="challenge-num">02</div>
+        <h3>Reporting Is Broken</h3>
+        <p>Email analytics don&rsquo;t match journey analytics, leaving the team unsure which numbers to trust. A single quarterly report extraction took 3.5 weeks to complete manually.</p>
+        <span class="challenge-metric">3.5 weeks for one report</span>
+      </div>
+      <div class="challenge-card">
+        <div class="challenge-num">03</div>
+        <h3>Segmentation Bottleneck</h3>
+        <p>Creating a targeted list requires requesting fields from the data team, cross-referencing with IT for validation, and waiting days before a segment is ready. No self-service capability.</p>
+        <span class="challenge-metric">Days to build a single segment</span>
+      </div>
+      <div class="challenge-card">
+        <div class="challenge-num">04</div>
+        <h3>Events Platform Gap</h3>
+        <p>The D365 events portal was trialled and abandoned as not fit for purpose. The team reverted to CVent, which is effective but carries significant licensing cost across 130+ events per year.</p>
+        <span class="challenge-metric">130+ events, high CVent cost</span>
+      </div>
+      <div class="challenge-card">
+        <div class="challenge-num">05</div>
+        <h3>No Marketing Attribution</h3>
+        <p>No way to demonstrate marketing ROI. No AB testing in practice, no campaign measurement, no omnichannel reporting. Marketing is perceived as a communications function, not a revenue driver.</p>
+        <span class="challenge-metric">Zero attribution capability</span>
+      </div>
+      <div class="challenge-card">
+        <div class="challenge-num">06</div>
+        <h3>Multi-Brand Complexity</h3>
+        <p>Four brands, each with their own domains and consent requirements. Managing separate preference centres, transactional emails for regulatory content, and brand-specific content is extremely difficult in the current platform.</p>
+        <span class="challenge-metric">4 brands, 1 team</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OUTCOMES -->
+<section class="outcomes reveal" id="outcomes">
+  <div class="section-inner">
+    <div class="section-label">Desired Outcomes</div>
+    <h2 class="section-title" style="color:var(--white)">What <em>success looks like</em></h2>
+    <p class="section-sub" style="color:rgba(255,255,255,0.4)">Eight outcomes, one platform.</p>
+    <div class="outcome-grid">
+      <div class="outcome-card"><div class="outcome-num">O1</div><h3>Faster Campaign Delivery</h3><p>Reduce email build-to-send time from days to hours. Drag-and-drop editor, reusable brand templates, and self-service segmentation.</p><span class="outcome-roi">Target: 70% reduction in build time</span></div>
+      <div class="outcome-card"><div class="outcome-num">O2</div><h3>Multi-Brand Management</h3><p>HubSpot Business Units give each brand its own domain, preference centre, and consent architecture &mdash; in a single marketing engine.</p><span class="outcome-roi">4 brands, 1 platform, 0 duplicated effort</span></div>
+      <div class="outcome-card"><div class="outcome-num">O3</div><h3>Events Consolidation</h3><p>Manage event registration, automated comms, and post-event reporting natively. On-site check-in and badge printing via BBD Boom&rsquo;s custom event module.</p><span class="outcome-roi">Potential CVent cost reduction</span></div>
+      <div class="outcome-card"><div class="outcome-num">O4</div><h3>Real-Time Attribution</h3><p>Tie every marketing activity to a single campaign and measure ROI with multi-touch attribution models. No more guessing.</p><span class="outcome-roi">First-ever marketing ROI reporting</span></div>
+      <div class="outcome-card"><div class="outcome-num">O5</div><h3>Regulatory Compliance</h3><p>Transactional email ensures mandatory regulatory comms are delivered regardless of subscription preferences. Traffic light classification built into workflows.</p><span class="outcome-roi">GDPR + FCA compliance confidence</span></div>
+      <div class="outcome-card"><div class="outcome-num">O6</div><h3>Omnichannel Reach</h3><p>Go beyond email. WhatsApp, paid social, LinkedIn advertising, and automated nurture sequences &mdash; all measurable, all integrated.</p><span class="outcome-roi">New channels: WhatsApp, LinkedIn, PPC</span></div>
+      <div class="outcome-card"><div class="outcome-num">O7</div><h3>Adviser Visibility</h3><p>Give CAMs and sales visibility into what marketing each adviser has received, which events they&rsquo;ve attended, and how they&rsquo;re engaging.</p><span class="outcome-roi">Sales + Marketing alignment</span></div>
+      <div class="outcome-card"><div class="outcome-num">O8</div><h3>Dynamics Integration</h3><p>HubSpot plugs into the existing D365 estate. Leads flow from marketing into Dynamics, account and opportunity data flows back. No disruption.</p><span class="outcome-roi">Coexistence, not replacement</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ARCHITECTURE -->
+<section class="architecture reveal" id="architecture">
+  <div class="section-inner">
+    <div class="section-label">Architecture</div>
+    <h2 class="section-title">How Data &amp; Interactions <em>Flow</em></h2>
+    <p class="section-sub">Toggle between today&rsquo;s landscape and the proposed HubSpot architecture to see how the brands consolidate.</p>
+
+    <div class="arch-toggle">
+      <button class="active" onclick="toggleArch('today')">Today</button>
+      <button onclick="toggleArch('hubspot')">With HubSpot</button>
+    </div>
+
+    <!-- TODAY -->
+    <div class="arch-view active" id="arch-today">
+      <div class="arch-diagram">
+        <h3>Current State &mdash; Fragmented Across Platforms</h3>
+        <div class="today-row">
+          <div class="today-platform pain">
+            <div class="today-platform-header">D365 Customer Insights <span class="status problem">Slow &amp; Dev-Dependent</span></div>
+            <div class="today-brands">
+              <span class="brand-pill sesame">Sesame</span>
+              <span class="brand-pill bankhall">Bankhall</span>
+              <span class="brand-pill pms">PMS</span>
+              <span class="brand-pill tates">Tates</span>
+            </div>
+            <div class="today-detail">Email marketing, segmentation, journeys &mdash; 3x slower than previous platform. Analytics don&rsquo;t match. No AB testing.</div>
+          </div>
+          <div class="today-platform pain">
+            <div class="today-platform-header">CVent <span class="status expensive">Expensive</span></div>
+            <div class="today-brands">
+              <span class="brand-pill sesame">Sesame</span>
+              <span class="brand-pill bankhall">Bankhall</span>
+              <span class="brand-pill pms">PMS</span>
+            </div>
+            <div class="today-detail">Event registration &amp; on-site check-in for 130+ events/year. D365 Events module abandoned.</div>
+          </div>
+          <div class="today-platform">
+            <div class="today-platform-header">D365 CRM <span class="status ok">Core System</span></div>
+            <div class="today-brands"><span class="brand-pill all">All Brands</span></div>
+            <div class="today-detail">Core adviser data, accounts, opportunities. Deeply integrated into business processes and data flows.</div>
+          </div>
+          <div class="today-platform">
+            <div class="today-platform-header">Spreadsheets &amp; Manual Processes <span class="status problem">No Visibility</span></div>
+            <div class="today-brands"><span class="brand-pill all">All Brands</span></div>
+            <div class="today-detail">Partner marketing tracking, sales notes, event reporting, mail merges for sales Outreach.</div>
+          </div>
+          <div class="today-platform">
+            <div class="today-platform-header">OneView (In Development) <span class="status ok">MVP</span></div>
+            <div class="today-brands"><span class="brand-pill all">All Brands</span></div>
+            <div class="today-detail">In-house adviser portal. Currently connected to D365 data. CTO has confirmed HubSpot API compatibility.</div>
+          </div>
+        </div>
+        <p style="text-align:center;margin-top:1.5rem;font-size:0.85rem;color:var(--gray-600);font-style:italic;">Data is siloed across platforms. No single view of adviser engagement. Manual processes everywhere.</p>
+      </div>
+    </div>
+
+    <!-- WITH HUBSPOT -->
+    <div class="arch-view" id="arch-hubspot">
+      <div class="arch-diagram">
+        <h3>Proposed State &mdash; Unified Marketing Engine</h3>
+        <div class="hs-arch">
+          <!-- HubSpot Portal -->
+          <div class="hs-portal">
+            <div class="hs-portal-header">
+              HubSpot Enterprise Portal
+              <small>SBG Master Portal &middot; Marketing Hub Enterprise</small>
+            </div>
+
+            <!-- Business Units -->
+            <div class="hs-hub" style="border-bottom:1px solid #fde8e0;">
+              <div class="hs-hub-name">Business Units <span class="hub-badge enterprise">Enterprise</span></div>
+              <div class="bu-grid">
+                <div class="bu-card master">Sesame<span class="bu-sub">Master Brand &middot; sbg.co.uk</span></div>
+                <div class="bu-card bu1">Bankhall<span class="bu-sub">Business Unit 1</span></div>
+                <div class="bu-card bu2">PMS<span class="bu-sub">Business Unit 2</span></div>
+                <div class="bu-card bu3">Tates<span class="bu-sub">Business Unit 3</span></div>
+              </div>
+              <p style="font-size:0.75rem;color:var(--gray-400);margin-top:0.6rem;">Each brand: own domain, preference centre, consent architecture, email templates, brand voice</p>
+            </div>
+
+            <!-- Marketing Features -->
+            <div class="hs-hub" style="border-bottom:1px solid #fde8e0;">
+              <div class="hs-hub-name">Marketing Hub Enterprise</div>
+              <div class="hs-features">
+                <span class="hs-feat">Email Marketing</span>
+                <span class="hs-feat">Segmentation</span>
+                <span class="hs-feat">Automation</span>
+                <span class="hs-feat">AB Testing</span>
+                <span class="hs-feat">Smart Content</span>
+                <span class="hs-feat">Social Publishing</span>
+                <span class="hs-feat">Ads (Meta, LinkedIn)</span>
+                <span class="hs-feat">Attribution Reporting</span>
+                <span class="hs-feat">Campaigns &amp; ROI</span>
+                <span class="hs-feat">WhatsApp</span>
+                <span class="hs-feat">AI Brand Voice</span>
+                <span class="hs-feat">Marketing Events</span>
+              </div>
+            </div>
+
+            <!-- Add-ons -->
+            <div class="hs-hub">
+              <div class="hs-hub-name">Add-ons</div>
+              <div class="hs-features">
+                <span class="hs-feat">Transactional Email <span style="color:#b7950b;">(Regulatory)</span></span>
+                <span class="hs-feat">BBD Boom Event Module <span style="color:#27ae60;">(Check-in, Badges, QR)</span></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Integration Layer -->
+          <div class="int-arrow">&#8597;</div>
+          <div class="integration-row">
+            <div class="int-card">
+              <h4>D365 CRM</h4>
+              <p>Bi-directional sync: leads &rarr; Dynamics, accounts &larr; HubSpot</p>
+            </div>
+            <div class="int-card">
+              <h4>OneView Portal</h4>
+              <p>API connection to adviser contact data</p>
+            </div>
+            <div class="int-card">
+              <h4>Microsoft Teams</h4>
+              <p>Virtual events &amp; internal collaboration</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="ecosystem-grid">
+          <div class="eco-col retire">
+            <h4>Retiring / Reducing</h4>
+            <ul>
+              <li>D365 Customer Insights (marketing)</li>
+              <li>CVent (partial &mdash; large conferences TBD)</li>
+              <li>Meltwater / Sprout Social</li>
+              <li>Manual spreadsheet tracking</li>
+            </ul>
+          </div>
+          <div class="eco-col continue">
+            <h4>Continuing / Integrating</h4>
+            <ul>
+              <li>D365 CRM (core data, accounts)</li>
+              <li>Microsoft Teams</li>
+              <li>Slack</li>
+              <li>OneView adviser portal</li>
+            </ul>
+          </div>
+          <div class="eco-col new">
+            <h4>New (HubSpot)</h4>
+            <ul>
+              <li>Marketing Hub Enterprise</li>
+              <li>Business Units (x3)</li>
+              <li>Transactional Email</li>
+              <li>WhatsApp, Social, Ads</li>
+              <li>BBD Boom Event Module</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- APPROACH — Two Phases -->
+<section class="approach reveal" id="approach">
+  <div class="section-inner">
+    <div class="section-label">The Approach</div>
+    <h2 class="section-title">Two Phases, Two Workstreams, <em>One Platform</em></h2>
+    <p class="section-sub">Phase 1 delivers an MVP &mdash; your team sending email marketing from HubSpot. Phase 2 rolls out the full marketing engine. Both workstreams (Data &amp; Platform / Marketing Activation) run in parallel within each phase.</p>
+
+    <div class="phase-container">
+      <!-- PHASE 1 -->
+      <div class="phase-block">
+        <div class="phase-header">
+          <span class="phase-badge p1">Phase 1</span>
+          <h3>MVP &mdash; Email Marketing Live</h3>
+          <span class="phase-milestone">Milestone: First campaign sent from HubSpot</span>
+        </div>
+        <div class="phase-content">
+          <div class="ws-col data">
+            <h4><span class="ws-dot"></span> Data &amp; Platform</h4>
+            <ul>
+              <li>HubSpot portal setup and Business Unit configuration (x4 brands)</li>
+              <li>Data model design &mdash; properties, associations, lifecycle stages</li>
+              <li>Contact data migration from D365 (cleansing, deduplication, mapping)</li>
+              <li>Multi-brand consent and preference centre architecture</li>
+              <li>D365 bi-directional integration (native sync or middleware)</li>
+              <li>User provisioning, permissions, and security</li>
+            </ul>
+          </div>
+          <div class="ws-col marketing">
+            <h4><span class="ws-dot"></span> Marketing Activation</h4>
+            <ul>
+              <li>Brand email templates designed and built per brand</li>
+              <li>Core segmentation lists (weekly newsletters, regulatory, partner comms)</li>
+              <li>Transactional email setup for regulatory &ldquo;must read&rdquo; comms</li>
+              <li>Initial automation workflows (welcome, event registration)</li>
+              <li>Marketing team training and onboarding</li>
+              <li>First campaign: plan, build, send, report</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- PHASE 2 -->
+      <div class="phase-block">
+        <div class="phase-header">
+          <span class="phase-badge p2">Phase 2</span>
+          <h3>Full Rollout &mdash; Marketing Engine at Scale</h3>
+          <span class="phase-milestone">Milestone: Full omnichannel marketing + events</span>
+        </div>
+        <div class="phase-content">
+          <div class="ws-col data">
+            <h4><span class="ws-dot"></span> Data &amp; Platform</h4>
+            <ul>
+              <li>OneView API integration scoping and build</li>
+              <li>Data governance framework and naming conventions</li>
+              <li>Advanced reporting datasets and custom properties</li>
+              <li>Lead scoring and engagement scoring models</li>
+              <li>Integration monitoring and error handling</li>
+            </ul>
+          </div>
+          <div class="ws-col marketing">
+            <h4><span class="ws-dot"></span> Marketing Activation</h4>
+            <ul>
+              <li>Event management rollout + BBD Boom event module deployment</li>
+              <li>Social media publishing, inbox, and ads integration</li>
+              <li>WhatsApp channel activation</li>
+              <li>Campaign and attribution reporting dashboards</li>
+              <li>AB testing framework and smart content</li>
+              <li>AI brand voice setup per brand</li>
+              <li>Advanced automation (nurture sequences, event lifecycle, partner comms)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MILESTONES -->
+<section class="milestones reveal" id="milestones">
+  <div class="section-inner">
+    <div class="section-label">Milestones</div>
+    <h2 class="section-title">Key Delivery <em>Checkpoints</em></h2>
+    <p class="section-sub">Indicative milestones &mdash; dates to be confirmed during scoping.</p>
+
+    <div class="milestone-track">
+      <div class="milestone-item">
+        <div class="milestone-dot p1">1</div>
+        <h4>Portal &amp; Data Ready</h4>
+        <p>HubSpot configured, Business Units live, data migrated, D365 integration active</p>
+      </div>
+      <div class="milestone-item">
+        <div class="milestone-dot p1">2</div>
+        <h4>First Campaign Sent</h4>
+        <p>MVP achieved &mdash; marketing team sends first email campaign from HubSpot</p>
+      </div>
+      <div class="milestone-item">
+        <div class="milestone-dot p2">3</div>
+        <h4>Events Live</h4>
+        <p>Event registration, automated comms, and BBD Boom event module deployed</p>
+      </div>
+      <div class="milestone-item">
+        <div class="milestone-dot p2">4</div>
+        <h4>Omnichannel Active</h4>
+        <p>Social, WhatsApp, ads, and advanced automation all operational</p>
+      </div>
+      <div class="milestone-item">
+        <div class="milestone-dot done">5</div>
+        <h4>Full Value</h4>
+        <p>Attribution reporting, ROI dashboards, and team fully self-sufficient</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CREDENTIALS -->
+<section class="credentials reveal" id="credentials">
+  <div class="section-inner">
+    <div class="section-label">Credentials</div>
+    <h2 class="section-title">Relevant <em>Experience</em></h2>
+    <p class="section-sub" style="max-width:680px;">Deep experience in Dynamics integrations, multi-brand implementations, data migrations, and regulated industries.</p>
+
+    <div class="cred-diagram-placeholder">
+      <h4>&#9881; Integration Architecture Examples</h4>
+      <p>Tommy will walk through detailed diagrams of our Dynamics integration patterns, middleware approaches, and data flow architectures from the projects below.</p>
+      <p style="margin-top:0.4rem;font-size:0.72rem;color:var(--gray-400);">[Diagrams to be presented live during the call]</p>
+    </div>
+
+    <div class="cred-grid">
+      <div class="cred-card"><span class="cred-tag dynamics">Dynamics Integration</span><h3>Reconomy Group</h3><p>Custom Microsoft Dynamics integration for a multi-brand environmental services group. Bi-directional data sync between HubSpot and Dynamics across multiple business units.</p></div>
+      <div class="cred-card"><span class="cred-tag dynamics">Dynamics Integration</span><h3>CHAMP</h3><p>Full HubSpot onboarding with custom API integration and ongoing hosting. Multi-year relationship spanning onboarding, optimisation, and managed API infrastructure.</p></div>
+      <div class="cred-card"><span class="cred-tag finserv">Financial Services</span><h3>LIA</h3><p>HubSpot implementation for Ireland&rsquo;s professional body for financial services. Service Hub onboarding, custom integration build, and ongoing platform management in a regulated environment.</p></div>
+      <div class="cred-card"><span class="cred-tag finserv">Financial Services</span><h3>FE fundinfo</h3><p>Portal consolidation and RevOps implementation for a leading financial data services company. Multi-portal merge, data migration, and ongoing managed RevOps support.</p></div>
+      <div class="cred-card"><span class="cred-tag portal">Multi-Brand Consolidation</span><h3>Kelly&rsquo;s Storage Group</h3><p>Portal consolidation across three HubSpot portals and four brands with custom middleware integration. Multi-brand architecture directly relevant to SBG&rsquo;s setup.</p></div>
+      <div class="cred-card"><span class="cred-tag events">Events &amp; Travel</span><h3>Caledonian Leisure</h3><p>Enterprise HubSpot implementation for a large leisure group. Up to 50 sales seats, 600K marketing contacts. Multi-brand, complex data architecture.</p></div>
+      <div class="cred-card"><span class="cred-tag events">Events &amp; Publishing</span><h3>Incisive Media</h3><p>HubSpot implementation for a financial and legal media group. Multi-brand publishing, event-driven marketing, and audience segmentation.</p></div>
+      <div class="cred-card"><span class="cred-tag migration">Platform Migration</span><h3>RamTech / Orama</h3><p>Portal consolidation and CPQ implementation. Post-project adoption programme including sales team enablement &mdash; relevant to SBG&rsquo;s phased ambitions.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY BBD BOOM -->
+<section class="why-boom reveal" id="why-boom">
+  <div class="section-inner">
+    <div class="section-label">Why BBD Boom</div>
+    <h2 class="section-title" style="color:var(--white)">Built for <em>This</em></h2>
+    <div class="proof-grid">
+      <div class="proof-card"><h3>HubSpot Elite Partner</h3><p>The highest tier in HubSpot&rsquo;s partner programme. Recognised for delivery quality, technical depth, and client outcomes.</p></div>
+      <div class="proof-card"><h3>Dynamics Integration Expertise</h3><p>We&rsquo;ve built HubSpot-to-Dynamics integrations across multiple clients &mdash; native data sync, custom middleware, and managed API infrastructure.</p></div>
+      <div class="proof-card"><h3>Financial Services Experience</h3><p>From LIA to FE fundinfo to CHAMP, we understand regulated environments, compliance requirements, and data sensitivity.</p></div>
+      <div class="proof-card"><h3>Multi-Brand Specialists</h3><p>Business Units, multi-portal consolidation, consent architecture across brands. Kelly&rsquo;s Storage, Caledonian Leisure, and more.</p></div>
+      <div class="proof-card"><h3>Custom Event Module</h3><p>Proprietary on-site event registration and check-in solution. QR codes, badge printing, real-time attendance tracking. Fills the CVent gap.</p></div>
+      <div class="proof-card"><h3>Adoption-Focused</h3><p>Structured training and adoption programmes that get teams confident and self-sufficient. Technology only delivers value when people use it.</p></div>
+    </div>
+    <div class="boom-stats">
+      <div class="boom-stat"><span class="boom-stat-num">225+</span><span class="boom-stat-label">Professionals</span></div>
+      <div class="boom-stat"><span class="boom-stat-num">2,000+</span><span class="boom-stat-label">Implementations</span></div>
+      <div class="boom-stat"><span class="boom-stat-num">600+</span><span class="boom-stat-label">Clients</span></div>
+      <div class="boom-stat"><span class="boom-stat-num">10+</span><span class="boom-stat-label">Years HubSpot Focus</span></div>
+    </div>
+    <div class="ecosystem-bar">
+      <p>Part of the Siloy ecosystem &mdash; Europe&rsquo;s top HubSpot partner<br>
+      Invise &middot; Webs &middot; Trialta &middot; Chili Digital &middot; Conversion Crew &middot; Vipu &middot; BBD Boom &middot; ProsperoHub &middot; LEVR</p>
+    </div>
+  </div>
+</section>
+
+<!-- INVESTMENT -->
+<section class="investment reveal" id="investment">
+  <div class="section-inner">
+    <div class="section-label">Investment</div>
+    <h2 class="section-title">Implementation <em>Investment</em></h2>
+    <div class="invest-placeholder">
+      <h3>To Be Confirmed</h3>
+      <p>Following the reverse demo and scoping sessions, we will provide a detailed statement of work with phased pricing options.</p>
+      <p class="invest-note">HubSpot software licensing is quoted separately by your HubSpot account team. Implementation fees cover BBD Boom&rsquo;s professional services only.</p>
+    </div>
+  </div>
+</section>
+
+<!-- NEXT STEPS -->
+<section class="next-steps reveal" id="next-steps">
+  <div class="section-inner">
+    <div class="section-label">Next Steps</div>
+    <h2 class="section-title" style="color:var(--white)">How to <em>Proceed</em></h2>
+    <div class="steps-list">
+      <div class="step-item"><div class="step-num">1</div><div><h4>Review This Overview</h4><p>Share with your wider stakeholder group. We&rsquo;re happy to present to anyone who needs to be brought up to speed.</p></div></div>
+      <div class="step-item"><div class="step-num">2</div><div><h4>Reverse Demo</h4><p>Walk us through your current D365 setup, data model, and day-to-day processes so we can scope accurately.</p></div></div>
+      <div class="step-item"><div class="step-num">3</div><div><h4>Statement of Work &amp; Pricing</h4><p>We produce a detailed proposal with phased deliverables, timeline, and investment options.</p></div></div>
+      <div class="step-item"><div class="step-num">4</div><div><h4>HubSpot Licensing Confirmation</h4><p>Finalise licensing terms for Marketing Hub Enterprise, Business Units, and Transactional Email.</p></div></div>
+      <div class="step-item"><div class="step-num">5</div><div><h4>Kick-off &amp; Implementation</h4><p>Sign the statement of work and begin. Phase 1 targets MVP &mdash; your first email campaign from HubSpot.</p></div></div>
+    </div>
+    <a href="https://www.bbdboom.com/meetings/adamlewis/video-call-on-inbound-with-adam-lewis-30-mins" class="cta-btn" target="_blank">Book a Call with Adam</a>
+  </div>
+</section>
+
+<footer>
+  <p class="we-relate">We <em>relate.</em></p>
+  <p>BBD Boom &mdash; HubSpot Elite Solutions Partner &middot; Part of the Siloy Group</p>
+  <p style="margin-top:0.35rem;"><a href="https://www.bbdboom.com" target="_blank">www.bbdboom.com</a></p>
+  <p style="margin-top:0.8rem;font-size:0.62rem;opacity:0.4;">This document is confidential and prepared exclusively for Sesame Bankhall Group. &copy; BBD Boom 2026.</p>
+</footer>
+
+<script>
+function toggleArch(view) {
+  document.querySelectorAll('.arch-view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.arch-toggle button').forEach(b => b.classList.remove('active'));
+  document.getElementById('arch-' + view).classList.add('active');
+  event.target.classList.add('active');
+}
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => { if (scrollY >= s.offsetTop - 100) current = s.getAttribute('id'); });
+  navLinks.forEach(l => { l.classList.remove('active'); if (l.getAttribute('href') === '#' + current) l.classList.add('active'); });
+});
+</script>
+</body>
+</html>
