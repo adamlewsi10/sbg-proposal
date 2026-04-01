@@ -194,9 +194,80 @@ section { padding: 4.5rem 2rem; }
 
 /* CREDENTIALS */
 .credentials { background: var(--white); border-top: 1px solid var(--gray-200); }
-.cred-diagram-placeholder { background: var(--yellow-soft); border: 2px dashed #e6d77a; border-radius: 12px; padding: 2.5rem 2rem; text-align: center; margin: 1.5rem 0 2rem; }
-.cred-diagram-placeholder h4 { font-family: var(--serif); font-size: 1.1rem; font-weight: 600; margin-bottom: 0.4rem; }
-.cred-diagram-placeholder p { font-size: 0.82rem; color: var(--gray-600); }
+
+/* Integration diagrams */
+.diag-toggle { display: flex; gap: 0; margin-bottom: 1.5rem; border: 2px solid var(--black); border-radius: 6px; overflow: hidden; width: fit-content; }
+.diag-toggle button { padding: 0.55rem 1.5rem; font-family: var(--sans); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; border: none; cursor: pointer; transition: all 0.3s; background: transparent; color: var(--black); }
+.diag-toggle button.active { background: var(--black); color: var(--white); }
+.diag-view { display: none; }
+.diag-view.active { display: block; }
+.diag-wrap { background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 12px; overflow: hidden; margin-bottom: 2rem; }
+.diag-title-bar { padding: 0.9rem 1.5rem; background: var(--white); border-bottom: 1px solid var(--gray-200); display: flex; align-items: baseline; gap: 1rem; flex-wrap: wrap; }
+.diag-title-bar h4 { font-family: var(--serif); font-size: 1rem; font-weight: 600; }
+.diag-title-bar span { font-size: 0.68rem; color: var(--gray-400); }
+.diag-body { overflow-x: auto; padding: 1.5rem; }
+
+/* Stage bar */
+.stage-bar { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 2px; margin-bottom: 1.4rem; min-width: 720px; }
+.stage-col { padding: 0.4rem 0.8rem; font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; text-align: center; border-radius: 4px; }
+.stage-col.s-awareness { background: rgba(52,152,219,0.1); color: #2471a3; }
+.stage-col.s-consideration { background: rgba(39,174,96,0.1); color: #1a7a43; }
+.stage-col.s-decision { background: rgba(155,89,182,0.1); color: #7d3c98; }
+.stage-col.s-loyalty { background: rgba(185,119,14,0.1); color: #9a7d0a; }
+
+/* Flow row */
+.flow-row { display: flex; align-items: center; gap: 0; min-width: 720px; flex-wrap: nowrap; margin-bottom: 0.5rem; }
+.flow-node { padding: 0.45rem 0.6rem; border-radius: 6px; font-size: 0.66rem; font-weight: 500; text-align: center; white-space: nowrap; line-height: 1.3; flex-shrink: 0; }
+.fn-hs { background: #fff3f0; border: 1.5px solid #FF7A59; }
+.fn-d365 { background: #eaf3fc; border: 1.5px solid #0078d4; }
+.fn-neutral { background: var(--white); border: 1px solid var(--gray-300); }
+.fn-sales { background: #f8f4fe; border: 1px solid #9b59b6; }
+.fn-green { background: #eafaf1; border: 1px solid #27ae60; }
+.fn-red { background: #fef5f5; border: 1px solid #e74c3c; }
+.fn-label { font-size: 0.58rem; display: block; color: var(--gray-400); margin-top: 0.15rem; font-weight: 400; }
+.flow-arrow { font-size: 0.9rem; color: var(--gray-300); padding: 0 0.35rem; flex-shrink: 0; }
+.flow-split { font-size: 0.6rem; color: var(--gray-400); padding: 0 0.3rem; flex-shrink: 0; }
+
+/* Platform logos inline */
+.pl-hs { color: #FF7A59; font-weight: 700; font-size: 0.72rem; }
+.pl-d365 { color: #0078d4; font-weight: 700; font-size: 0.72rem; }
+
+/* Lifecycle legend */
+.lc-legend { display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap; min-width: 720px; }
+.lc-pill { font-size: 0.6rem; font-weight: 600; padding: 0.18rem 0.6rem; border-radius: 20px; }
+.lc-lead { background: #eaf3fc; color: #2471a3; }
+.lc-mql { background: #fef9e7; color: #9a7d0a; }
+.lc-sql { background: #fdf2f8; color: #8e44ad; }
+.lc-opp { background: #eafaf1; color: #1a7a43; }
+.lc-cust { background: #eafaf1; color: #148f77; }
+
+/* Use cases grid */
+.uc-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.5rem; margin-top: 1.5rem; min-width: 720px; border-top: 1px solid var(--gray-200); padding-top: 1.2rem; }
+.uc-box { background: var(--white); border: 1px solid var(--gray-200); border-radius: 6px; padding: 0.6rem 0.5rem; }
+.uc-no { font-size: 0.56rem; font-weight: 700; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.2rem; }
+.uc-title { font-size: 0.62rem; font-weight: 600; color: var(--black); margin-bottom: 0.25rem; line-height: 1.3; }
+.uc-body { font-size: 0.58rem; color: var(--gray-600); line-height: 1.4; }
+.uc-freq { font-size: 0.55rem; color: var(--ws-data); margin-top: 0.25rem; font-weight: 600; }
+
+/* Data flow diagram */
+.df-layout { display: grid; grid-template-columns: 1fr auto; gap: 1.5rem; min-width: 600px; }
+.df-main { display: flex; flex-direction: column; gap: 0; }
+.df-row { display: flex; align-items: center; justify-content: center; gap: 0; }
+.df-branch-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin: 0.5rem 0; }
+.df-node { padding: 0.5rem 0.9rem; border-radius: 6px; font-size: 0.7rem; font-weight: 500; text-align: center; line-height: 1.3; min-width: 160px; }
+.df-center { display: flex; justify-content: center; padding: 0.25rem 0; color: var(--gray-300); font-size: 0.9rem; }
+.df-split-label { font-size: 0.58rem; color: var(--gray-400); text-align: center; }
+.df-sync-row { display: grid; grid-template-columns: auto 1fr auto; gap: 0.5rem; align-items: center; padding: 0.4rem 0; border-top: 1px solid var(--gray-200); margin-top: 0.5rem; }
+.df-sync-left { padding: 0.4rem 0.8rem; border-radius: 6px; font-size: 0.65rem; font-weight: 500; text-align: center; }
+.df-sync-arrow { text-align: center; font-size: 0.8rem; color: var(--gray-400); }
+.df-sync-right { padding: 0.4rem 0.8rem; border-radius: 6px; font-size: 0.65rem; font-weight: 500; text-align: center; }
+.df-notes { background: var(--white); border: 1px solid var(--gray-200); border-radius: 8px; padding: 1rem; font-size: 0.68rem; min-width: 200px; }
+.df-notes h5 { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--gray-600); margin-bottom: 0.5rem; margin-top: 0.8rem; }
+.df-notes h5:first-child { margin-top: 0; }
+.df-notes ul { list-style: none; padding: 0; }
+.df-notes li { font-size: 0.62rem; color: var(--gray-600); padding: 0.15rem 0 0.15rem 0.8rem; position: relative; line-height: 1.4; }
+.df-notes li::before { content: '·'; position: absolute; left: 0; color: var(--ws-data); font-weight: 700; }
+.df-note-tag { display: inline-block; background: rgba(52,152,219,0.1); color: #2471a3; font-size: 0.55rem; font-weight: 700; padding: 0.1rem 0.4rem; border-radius: 3px; margin-bottom: 0.3rem; letter-spacing: 0.05em; text-transform: uppercase; }
 .cred-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; }
 .cred-card { background: var(--gray-50); border-radius: 8px; padding: 1.5rem; border: 1px solid var(--gray-200); transition: transform 0.3s, box-shadow 0.3s; }
 .cred-card:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
@@ -439,10 +510,207 @@ footer .we-relate em { font-style: italic; }
     <div class="section-label">Credentials</div>
     <h2 class="section-title">Relevant <em>Experience</em></h2>
     <p class="section-sub" style="max-width:680px;">Deep experience in Dynamics integrations, multi-brand implementations, data migrations, and regulated industries.</p>
-    <div class="cred-diagram-placeholder">
-      <h4>&#9881; Integration Architecture Examples</h4>
-      <p>Tommy will walk through detailed diagrams of our Dynamics integration patterns, middleware approaches, and data flow architectures from the projects below.</p>
-      <p style="margin-top:0.4rem;font-size:0.72rem;color:var(--gray-400);">[Diagrams to be presented live during the call]</p>
+    <!-- Diagram toggle -->
+    <div class="diag-toggle">
+      <button class="active" onclick="showDiag('lifecycle')">Integration System Map</button>
+      <button onclick="showDiag('dataflow')">Data Integration Flow</button>
+    </div>
+
+    <!-- DIAGRAM 1: Integration System Map -->
+    <div id="diag-lifecycle" class="diag-view active">
+      <div class="diag-wrap">
+        <div class="diag-title-bar">
+          <h4>Integration System Map</h4>
+          <span>Business Units: ReBound &amp; Advanced Supply Chain &mdash; <span class="pl-hs">HubSpot</span> &harr; <span class="pl-d365">Microsoft Dynamics 365</span></span>
+        </div>
+        <div class="diag-body">
+          <!-- Lifecycle legend -->
+          <div class="lc-legend">
+            <strong style="font-size:0.6rem;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.08em;margin-right:0.3rem;">Lifecycle Stages:</strong>
+            <span class="lc-pill lc-lead">Lead</span>
+            <span class="lc-pill lc-mql">MQL</span>
+            <span class="lc-pill lc-sql">SQL</span>
+            <span class="lc-pill lc-opp">Opportunity</span>
+            <span class="lc-pill lc-cust">Customer</span>
+          </div>
+          <!-- Stage headers -->
+          <div class="stage-bar">
+            <div class="stage-col s-awareness">Awareness</div>
+            <div class="stage-col s-consideration">Consideration</div>
+            <div class="stage-col s-decision">Decision</div>
+            <div class="stage-col s-loyalty">Loyalty &amp; Retention</div>
+          </div>
+          <!-- Main flow row -->
+          <div class="flow-row">
+            <div class="flow-node fn-hs"><strong class="pl-hs">HubSpot</strong><span class="fn-label">Platform</span></div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-node fn-neutral">Paid Search<br>+ Social<span class="fn-label">+ Website content</span></div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-node fn-neutral">Lead Scoring<br>&amp; Company Scoring<span class="fn-label">Automated</span></div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-node fn-hs">Contact hits<br>inclusion list<span class="fn-label">Active trigger</span></div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-node fn-d365">Create Lead in<br>Microsoft Dynamics<span class="fn-label">Webhook</span></div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-node fn-sales">Sales<br>Qualifies</div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-node fn-d365">Lead converted<br>→ Contact &amp; Account<span class="fn-label">Dynamics</span></div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-node fn-d365">Opportunity<br>in Dynamics<span class="fn-label">+ Stages 1–3</span></div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-node fn-green">Closed<br>Won</div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-node fn-neutral">Service Delivery<br>→ Loyalty &amp; Advocacy<span class="fn-label">Cross-sell / Recert.</span></div>
+          </div>
+          <!-- Disqualify branch -->
+          <div class="flow-row" style="margin-top:0.5rem;opacity:0.6;">
+            <div style="width:370px;flex-shrink:0;"></div>
+            <span class="flow-arrow" style="transform:rotate(90deg);display:inline-block;margin-right:0.3rem;">↓</span>
+            <div class="flow-node fn-red" style="font-size:0.62rem;">Disqualify<br><span class="fn-label">→ Nurture back to HubSpot</span></div>
+          </div>
+          <!-- Use cases -->
+          <div class="uc-grid">
+            <div class="uc-box">
+              <div class="uc-no">Use Case 1</div>
+              <div class="uc-title">Contact sync HS → D365 Lead</div>
+              <div class="uc-body">Trigger: contact validated &amp; active list enrolled. Fields: ASCS lifecycle, email, record ID, sync type.</div>
+              <div class="uc-freq">Webhook</div>
+            </div>
+            <div class="uc-box">
+              <div class="uc-no">Use Case 2</div>
+              <div class="uc-title">Contact sync HS → D365 Contact</div>
+              <div class="uc-body">Trigger: validated contact, active list, sync type = Contact. Each BU has own lifecycle stage properties.</div>
+              <div class="uc-freq">Webhook</div>
+            </div>
+            <div class="uc-box">
+              <div class="uc-no">Use Case 3</div>
+              <div class="uc-title">Contact sync D365 → HS Contact</div>
+              <div class="uc-body">Trigger: required fields present. HubSpot is master for maintaining &amp; updating contacts, D365 can overwrite sync back.</div>
+              <div class="uc-freq">Webhook</div>
+            </div>
+            <div class="uc-box">
+              <div class="uc-no">Use Case 4</div>
+              <div class="uc-title">Lead sync D365 → HS Contact</div>
+              <div class="uc-body">Trigger: required fields incl. D365 ID, first/last name, email, company, job title, account associated.</div>
+              <div class="uc-freq">Webhook</div>
+            </div>
+            <div class="uc-box">
+              <div class="uc-no">Use Case 5</div>
+              <div class="uc-title">Account sync D365 → HS Company</div>
+              <div class="uc-body">All new active D365 accounts create new HS companies. Updates to synced accounts reflect in HubSpot.</div>
+              <div class="uc-freq">Webhook</div>
+            </div>
+            <div class="uc-box">
+              <div class="uc-no">Use Case 6</div>
+              <div class="uc-title">Company sync HS → D365 Account</div>
+              <div class="uc-body">D365 Account is known in HubSpot. New company owners in Dynamics must reflect in HubSpot &lsquo;company owner&rsquo; field.</div>
+              <div class="uc-freq">Webhook</div>
+            </div>
+            <div class="uc-box">
+              <div class="uc-no">Use Case 7</div>
+              <div class="uc-title">Opportunity sync D365 → HS Deal</div>
+              <div class="uc-body">New D365 opportunities sync to HubSpot with associated record info. New owners in D365 reflect as HubSpot system users in deal owner field.</div>
+              <div class="uc-freq">Webhook</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DIAGRAM 2: Data Integration Flow -->
+    <div id="diag-dataflow" class="diag-view">
+      <div class="diag-wrap">
+        <div class="diag-title-bar">
+          <h4>Integration Process Map</h4>
+          <span>Lead qualification &amp; data sync flow &mdash; <span class="pl-hs">HubSpot</span> &harr; <span class="pl-d365">Microsoft Dynamics 365</span></span>
+        </div>
+        <div class="diag-body">
+          <div class="df-layout">
+            <div class="df-main">
+              <!-- Step 1 -->
+              <div class="df-row"><div class="df-node fn-hs">Contact Created in HubSpot</div></div>
+              <div class="df-center">↓</div>
+              <!-- Step 2 -->
+              <div class="df-row"><div class="df-node fn-hs">Contact Meets <strong>Lead Score Threshold 20+</strong></div></div>
+              <div class="df-center">↓</div>
+              <!-- Branch: New / Existing -->
+              <div style="display:flex;justify-content:center;gap:3rem;min-width:400px;">
+                <div style="text-align:center;">
+                  <div class="df-split-label" style="margin-bottom:0.3rem;">New</div>
+                  <div class="df-node fn-d365" style="min-width:140px;">New Lead Created<br>in Dynamics</div>
+                </div>
+                <div style="text-align:center;">
+                  <div class="df-split-label" style="margin-bottom:0.3rem;">Existing</div>
+                  <div class="df-node fn-d365" style="min-width:140px;">Update Existing<br>Lead/Contact Record</div>
+                </div>
+              </div>
+              <div class="df-center">↓</div>
+              <!-- Step 3 -->
+              <div class="df-row"><div class="df-node fn-d365">Lead Assigned to Salesperson</div></div>
+              <div class="df-center">↓</div>
+              <div class="df-row"><div class="df-node fn-sales">Salesperson Reviews Lead</div></div>
+              <div class="df-center">↓</div>
+              <!-- Step 4 -->
+              <div class="df-row"><div class="df-node fn-d365">Sales Qualify Lead</div></div>
+              <div class="df-center">↓</div>
+              <!-- Outcome branches -->
+              <div style="display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;min-width:400px;">
+                <div style="text-align:center;">
+                  <div class="df-split-label" style="margin-bottom:0.3rem;">Converted</div>
+                  <div style="display:flex;flex-direction:column;gap:0.4rem;">
+                    <div class="df-node fn-d365" style="min-width:110px;font-size:0.62rem;">Contact Created</div>
+                    <div class="df-node fn-d365" style="min-width:110px;font-size:0.62rem;">Account Created</div>
+                  </div>
+                </div>
+                <div style="text-align:center;">
+                  <div class="df-split-label" style="margin-bottom:0.3rem;">If Contact</div>
+                  <div class="df-node fn-d365" style="min-width:110px;font-size:0.62rem;">Opportunity Created</div>
+                </div>
+                <div style="text-align:center;">
+                  <div class="df-split-label" style="margin-bottom:0.3rem;">&nbsp;</div>
+                  <div class="df-node fn-red" style="min-width:90px;font-size:0.62rem;">Disqualified</div>
+                </div>
+              </div>
+              <!-- Sync rows -->
+              <div style="margin-top:1.5rem;border-top:1px solid var(--gray-200);padding-top:1rem;">
+                <div style="font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--gray-400);margin-bottom:0.6rem;">Bidirectional Sync</div>
+                <div class="df-sync-row">
+                  <div class="df-sync-left fn-hs" style="font-size:0.62rem;">Contact Updated<br>in HubSpot</div>
+                  <div class="df-sync-arrow">← ←</div>
+                  <div class="df-sync-right fn-d365" style="font-size:0.62rem;">Contact Created<br>or Updated</div>
+                </div>
+                <div class="df-sync-row">
+                  <div class="df-sync-left fn-hs" style="font-size:0.62rem;">Company Created/<br>Updated in HubSpot</div>
+                  <div class="df-sync-arrow">← ←</div>
+                  <div class="df-sync-right fn-d365" style="font-size:0.62rem;">Account Created<br>or Updated</div>
+                </div>
+                <div class="df-sync-row">
+                  <div class="df-sync-left fn-hs" style="font-size:0.62rem;">Deal Created/<br>Updated in HubSpot</div>
+                  <div class="df-sync-arrow">← ←</div>
+                  <div class="df-sync-right fn-d365" style="font-size:0.62rem;">Opportunity Created<br>or Updated</div>
+                </div>
+              </div>
+            </div>
+            <!-- Notes panel -->
+            <div class="df-notes">
+              <div class="df-note-tag">Additional Field Data</div>
+              <h5>For existing Leads &amp; Contacts in D365, pass additional fields:</h5>
+              <ul>
+                <li>Recent Conversion Date (last HubSpot form submission)</li>
+                <li>Last Marketing Email Opened Date</li>
+                <li>Became an MQL Date</li>
+              </ul>
+              <div class="df-note-tag" style="margin-top:0.8rem;">Custom Views</div>
+              <h5>Create Custom Views to Track Engagement</h5>
+              <ul>
+                <li><strong>Recently Reconverted Leads</strong> — Leads who filled out a new form</li>
+                <li><strong>Hot Leads – Recently Engaged</strong> — Opened a marketing email but haven&rsquo;t reconverted</li>
+                <li><strong>MQLs Ready for Sales</strong> — Newly qualified leads needing follow-up</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="cred-grid">
       <div class="cred-card"><span class="cred-tag dynamics">Dynamics Integration</span><h3>Reconomy Group</h3><p>Custom Microsoft Dynamics integration for a multi-brand environmental services group. Bi-directional data sync between HubSpot and Dynamics across multiple business units.</p></div>
@@ -517,6 +785,12 @@ footer .we-relate em { font-style: italic; }
 </footer>
 
 <script>
+function showDiag(view) {
+  document.querySelectorAll('.diag-view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.diag-toggle button').forEach(b => b.classList.remove('active'));
+  document.getElementById('diag-' + view).classList.add('active');
+  event.target.classList.add('active');
+}
 function toggleArch(view) {
   document.querySelectorAll('.arch-view').forEach(v => v.classList.remove('active'));
   document.querySelectorAll('.arch-toggle button').forEach(b => b.classList.remove('active'));
