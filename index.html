@@ -77,13 +77,13 @@ section { padding: 4.5rem 2rem; }
 
 /* CHALLENGES */
 .challenges { background: var(--white); }
-.challenge-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.2rem; margin-top: 1.5rem; }
+.challenge-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.2rem; margin-top: 1.5rem; }
+@media (max-width: 600px) { .challenge-grid { grid-template-columns: 1fr; } }
 .challenge-card { background: var(--gray-50); border-radius: 8px; padding: 1.8rem; border: 1px solid var(--gray-200); transition: transform 0.3s, box-shadow 0.3s; }
 .challenge-card:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(0,0,0,0.06); }
 .challenge-num { font-family: var(--serif); font-size: 1.6rem; font-weight: 600; color: var(--black); opacity: 0.12; margin-bottom: 0.4rem; }
-.challenge-card h3 { font-family: var(--serif); font-size: 1.1rem; font-weight: 600; margin-bottom: 0.4rem; }
-.challenge-card p { font-size: 0.85rem; color: var(--gray-600); line-height: 1.55; }
-.challenge-metric { display: inline-block; margin-top: 0.7rem; background: #fef0f0; color: #c0392b; font-size: 0.72rem; font-weight: 600; padding: 0.25rem 0.7rem; border-radius: 20px; }
+.challenge-card h3 { font-family: var(--serif); font-size: 1.5rem; font-weight: 600; margin-bottom: 0.4rem; }
+.challenge-card p { font-size: 0.95rem; color: var(--gray-600); line-height: 1.55; }
 
 /* OUTCOMES — light blue instead of dark */
 .outcomes { background: var(--blue-light); }
@@ -369,12 +369,10 @@ footer .we-relate em { font-style: italic; }
     <h2 class="section-title">Where things <em>stand today</em></h2>
     <p class="section-sub">From previous conversations, here is what we heard.</p>
     <div class="challenge-grid">
-      <div class="challenge-card"><div class="challenge-num">01</div><h3>Email Takes 3x Longer</h3><p>Building and sending an email campaign in D365 Customer Insights takes approximately three times longer than the previous platform. The team is roughly 40% behind in output capacity.</p><span class="challenge-metric">300% slower email production</span></div>
-      <div class="challenge-card"><div class="challenge-num">02</div><h3>Reporting Is Broken</h3><p>Email analytics don&rsquo;t match journey analytics, leaving the team unsure which numbers to trust. A single quarterly report extraction took 3.5 weeks to complete manually.</p><span class="challenge-metric">3.5 weeks for one report</span></div>
-      <div class="challenge-card"><div class="challenge-num">03</div><h3>Segmentation Bottleneck</h3><p>Creating a targeted list requires requesting fields from the data team, cross-referencing with IT for validation, and waiting days before a segment is ready. No self-service capability.</p><span class="challenge-metric">Days to build a single segment</span></div>
-      <div class="challenge-card"><div class="challenge-num">04</div><h3>Events Platform Gap</h3><p>The D365 events portal was trialled and abandoned as not fit for purpose. The team reverted to CVent, which is effective but carries significant licensing cost across 130+ events per year.</p><span class="challenge-metric">130+ events, high CVent cost</span></div>
-      <div class="challenge-card"><div class="challenge-num">05</div><h3>No Marketing Attribution</h3><p>No way to demonstrate marketing ROI. No AB testing in practice, no campaign measurement, no omnichannel reporting. Marketing is perceived as a communications function, not a revenue driver.</p><span class="challenge-metric">Zero attribution capability</span></div>
-      <div class="challenge-card"><div class="challenge-num">06</div><h3>Multi-Brand Complexity</h3><p>Four brands, each with their own domains and consent requirements. Managing separate preference centres, transactional emails for regulatory content, and brand-specific content is extremely difficult in the current platform.</p><span class="challenge-metric">4 brands, 1 team</span></div>
+      <div class="challenge-card"><div class="challenge-num">01</div><h3>Email Deployment Is Not Agile</h3><p>Campaign build and send takes too long in the current platform. The team can&rsquo;t move at the pace the business needs.</p></div>
+      <div class="challenge-card"><div class="challenge-num">02</div><h3>Reporting Gaps</h3><p>Analytics don&rsquo;t match across systems, numbers can&rsquo;t be trusted, and there&rsquo;s no marketing attribution to demonstrate ROI.</p></div>
+      <div class="challenge-card"><div class="challenge-num">03</div><h3>Segmentation Bottleneck</h3><p>Building a targeted list requires multiple teams and days of lead time. No self-service capability for marketing.</p></div>
+      <div class="challenge-card"><div class="challenge-num">04</div><h3>Event Platform Costs</h3><p>CVent is effective but carries significant licensing cost across 130+ events per year. The D365 events module was abandoned.</p></div>
     </div>
   </div>
 </section>
@@ -383,16 +381,14 @@ footer .we-relate em { font-style: italic; }
   <div class="section-inner">
     <div class="section-label">Desired Outcomes</div>
     <h2 class="section-title">What <em>success looks like</em></h2>
-    <p class="section-sub">Eight outcomes, one platform.</p>
+    <p class="section-sub">Six outcomes, one platform.</p>
     <div class="outcome-grid">
       <div class="outcome-card"><div class="outcome-num">O1</div><h3>Faster Campaign Delivery</h3><p>Reduce email build-to-send time from days to hours. Drag-and-drop editor, reusable brand templates, and self-service segmentation.</p><span class="outcome-roi">Target: 70% reduction in build time</span></div>
       <div class="outcome-card"><div class="outcome-num">O2</div><h3>Multi-Brand Management</h3><p>HubSpot Business Units give each brand its own domain, preference centre, and consent architecture &mdash; in a single marketing engine.</p><span class="outcome-roi">4 brands, 1 platform, 0 duplicated effort</span></div>
       <div class="outcome-card"><div class="outcome-num">O3</div><h3>Events Consolidation</h3><p>Manage event registration, automated comms, and post-event reporting natively. On-site check-in and badge printing via BBD Boom&rsquo;s custom event module.</p><span class="outcome-roi">Potential CVent cost reduction</span></div>
       <div class="outcome-card"><div class="outcome-num">O4</div><h3>Real-Time Attribution</h3><p>Tie every marketing activity to a single campaign and measure ROI with multi-touch attribution models. No more guessing.</p><span class="outcome-roi">First-ever marketing ROI reporting</span></div>
-      <div class="outcome-card"><div class="outcome-num">O5</div><h3>Regulatory Compliance</h3><p>Transactional email ensures mandatory regulatory comms are delivered regardless of subscription preferences. Traffic light classification built into workflows.</p><span class="outcome-roi">GDPR + FCA compliance confidence</span></div>
-      <div class="outcome-card"><div class="outcome-num">O6</div><h3>Omnichannel Reach</h3><p>Go beyond email. WhatsApp, paid social, LinkedIn advertising, and automated nurture sequences &mdash; all measurable, all integrated.</p><span class="outcome-roi">New channels: WhatsApp, LinkedIn, PPC</span></div>
-      <div class="outcome-card"><div class="outcome-num">O7</div><h3>Adviser Visibility</h3><p>Give CAMs and sales visibility into what marketing each adviser has received, which events they&rsquo;ve attended, and how they&rsquo;re engaging.</p><span class="outcome-roi">Sales + Marketing alignment</span></div>
-      <div class="outcome-card"><div class="outcome-num">O8</div><h3>Dynamics Integration</h3><p>HubSpot plugs into the existing D365 estate. Leads flow from marketing into Dynamics, account and opportunity data flows back. No disruption.</p><span class="outcome-roi">Coexistence, not replacement</span></div>
+      <div class="outcome-card"><div class="outcome-num">O5</div><h3>Adviser Visibility</h3><p>Give CAMs and sales visibility into what marketing each adviser has received, which events they&rsquo;ve attended, and how they&rsquo;re engaging.</p><span class="outcome-roi">Sales + Marketing alignment</span></div>
+      <div class="outcome-card"><div class="outcome-num">O6</div><h3>Dynamics Integration</h3><p>HubSpot plugs into the existing D365 estate. Leads flow from marketing into Dynamics, account and opportunity data flows back. No disruption.</p><span class="outcome-roi">Coexistence, not replacement</span></div>
     </div>
   </div>
 </section>
@@ -466,6 +462,21 @@ footer .we-relate em { font-style: italic; }
   </div>
 </section>
 
+<section class="milestones reveal" id="milestones">
+  <div class="section-inner">
+    <div class="section-label">Milestones</div>
+    <h2 class="section-title">Key Delivery <em>Checkpoints</em></h2>
+    <p class="section-sub">Indicative milestones &mdash; dates to be confirmed during scoping.</p>
+    <div class="milestone-track">
+      <div class="milestone-item"><div class="milestone-dot p1">1</div><h4>Portal &amp; Data Ready</h4><p>HubSpot configured, Business Units live, data migrated, D365 integration active</p></div>
+      <div class="milestone-item"><div class="milestone-dot p1">2</div><h4>First Campaign Sent</h4><p>MVP achieved &mdash; marketing team sends first email campaign from HubSpot</p></div>
+      <div class="milestone-item"><div class="milestone-dot p2">3</div><h4>Events Live</h4><p>Event registration, automated comms, and BBD Boom event module deployed</p></div>
+      <div class="milestone-item"><div class="milestone-dot p2">4</div><h4>Omnichannel Active</h4><p>Social, WhatsApp, ads, and advanced automation all operational</p></div>
+      <div class="milestone-item"><div class="milestone-dot done">5</div><h4>Full Value</h4><p>Attribution reporting, ROI dashboards, and team fully self-sufficient</p></div>
+    </div>
+  </div>
+</section>
+
 <section class="approach reveal" id="approach">
   <div class="section-inner">
     <div class="section-label">The Approach</div>
@@ -486,21 +497,6 @@ footer .we-relate em { font-style: italic; }
           <div class="ws-col marketing"><h4><span class="ws-dot"></span> Marketing Activation</h4><ul><li>Event management rollout + BBD Boom event module deployment</li><li>Social media publishing, inbox, and ads integration</li><li>WhatsApp channel activation</li><li>Campaign and attribution reporting dashboards</li><li>AB testing framework and smart content</li><li>AI brand voice setup per brand</li><li>Advanced automation (nurture sequences, event lifecycle, partner comms)</li></ul></div>
         </div>
       </div>
-    </div>
-  </div>
-</section>
-
-<section class="milestones reveal" id="milestones">
-  <div class="section-inner">
-    <div class="section-label">Milestones</div>
-    <h2 class="section-title">Key Delivery <em>Checkpoints</em></h2>
-    <p class="section-sub">Indicative milestones &mdash; dates to be confirmed during scoping.</p>
-    <div class="milestone-track">
-      <div class="milestone-item"><div class="milestone-dot p1">1</div><h4>Portal &amp; Data Ready</h4><p>HubSpot configured, Business Units live, data migrated, D365 integration active</p></div>
-      <div class="milestone-item"><div class="milestone-dot p1">2</div><h4>First Campaign Sent</h4><p>MVP achieved &mdash; marketing team sends first email campaign from HubSpot</p></div>
-      <div class="milestone-item"><div class="milestone-dot p2">3</div><h4>Events Live</h4><p>Event registration, automated comms, and BBD Boom event module deployed</p></div>
-      <div class="milestone-item"><div class="milestone-dot p2">4</div><h4>Omnichannel Active</h4><p>Social, WhatsApp, ads, and advanced automation all operational</p></div>
-      <div class="milestone-item"><div class="milestone-dot done">5</div><h4>Full Value</h4><p>Attribution reporting, ROI dashboards, and team fully self-sufficient</p></div>
     </div>
   </div>
 </section>
@@ -712,14 +708,19 @@ footer .we-relate em { font-style: italic; }
         </div>
       </div>
     </div>
+    <h3 style="font-family:var(--serif);font-size:1.3rem;font-weight:600;margin-bottom:1rem;margin-top:2rem;">Sector Expertise &mdash; <em>Financial Services</em></h3>
+    <div class="cred-grid">
+      <div class="cred-card"><span class="cred-tag finserv">Financial Services</span><h3>LIA</h3><p>HubSpot implementation for Ireland&rsquo;s professional body for financial services. Service Hub onboarding, custom integration build, and ongoing platform management in a regulated environment.</p></div>
+      <div class="cred-card"><span class="cred-tag finserv">Financial Services</span><h3>FE fundinfo</h3><p>Portal consolidation and RevOps implementation for a leading financial data services company. Multi-portal merge, data migration, and ongoing managed RevOps support.</p></div>
+      <div class="cred-card"><span class="cred-tag finserv">Financial Services</span><h3>Incisive Media</h3><p>HubSpot implementation for a financial and legal media group. Multi-brand publishing, event-driven marketing, and audience segmentation in regulated financial markets.</p></div>
+    </div>
+
+    <h3 style="font-family:var(--serif);font-size:1.3rem;font-weight:600;margin-bottom:1rem;margin-top:2.5rem;">Similar Projects</h3>
     <div class="cred-grid">
       <div class="cred-card"><span class="cred-tag dynamics">Dynamics Integration</span><h3>Reconomy Group</h3><p>Custom Microsoft Dynamics integration for a multi-brand environmental services group. Bi-directional data sync between HubSpot and Dynamics across multiple business units.</p></div>
       <div class="cred-card"><span class="cred-tag dynamics">Dynamics Integration</span><h3>CHAMP</h3><p>Full HubSpot onboarding with custom API integration and ongoing hosting. Multi-year relationship spanning onboarding, optimisation, and managed API infrastructure.</p></div>
-      <div class="cred-card"><span class="cred-tag finserv">Financial Services</span><h3>LIA</h3><p>HubSpot implementation for Ireland&rsquo;s professional body for financial services. Service Hub onboarding, custom integration build, and ongoing platform management in a regulated environment.</p></div>
-      <div class="cred-card"><span class="cred-tag finserv">Financial Services</span><h3>FE fundinfo</h3><p>Portal consolidation and RevOps implementation for a leading financial data services company. Multi-portal merge, data migration, and ongoing managed RevOps support.</p></div>
       <div class="cred-card"><span class="cred-tag portal">Multi-Brand Consolidation</span><h3>Kelly&rsquo;s Storage Group</h3><p>Portal consolidation across three HubSpot portals and four brands with custom middleware integration. Multi-brand architecture directly relevant to SBG&rsquo;s setup.</p></div>
       <div class="cred-card"><span class="cred-tag events">Events &amp; Travel</span><h3>Caledonian Leisure</h3><p>Enterprise HubSpot implementation for a large leisure group. Up to 50 sales seats, 600K marketing contacts. Multi-brand, complex data architecture.</p></div>
-      <div class="cred-card"><span class="cred-tag events">Events &amp; Publishing</span><h3>Incisive Media</h3><p>HubSpot implementation for a financial and legal media group. Multi-brand publishing, event-driven marketing, and audience segmentation.</p></div>
       <div class="cred-card"><span class="cred-tag migration">Platform Migration</span><h3>RamTech / Orama</h3><p>Portal consolidation and CPQ implementation. Post-project adoption programme including sales team enablement &mdash; relevant to SBG&rsquo;s phased ambitions.</p></div>
     </div>
   </div>
